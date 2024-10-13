@@ -9,6 +9,6 @@ s.source           = { :git => "https://github.com/Splash04/TagTextView.git", :t
 s.resource_bundle  = {"TagTextView.privacy"=>"Sources/PrivacyInfo.xcprivacy"}
 s.requires_arc     = true
 s.platform         = :ios, '15.0'
-s.swift_version    = Ô5.0Õ
-s.source_files     = 'Sources/TagTextView/**/*.{swift}'
+s.swift_version    = '5.0'
+s.source_files     = 'Sources/TagTextView/**/*.swift'
 end
