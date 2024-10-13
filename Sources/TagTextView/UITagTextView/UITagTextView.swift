@@ -394,14 +394,14 @@ extension UITagTextView: UIGestureRecognizerDelegate {
 public extension UITagTextView { enum Constants {} }
 public extension UITagTextView.Constants {
     enum Defaults {
-        static let mentionSymbol: String = "@"
-        static let hashTagSymbol: String = "#"
-        static let textColor: UIColor = .black
-        static let textFont: UIFont = .systemFont(ofSize: 15)
-        static let mentionColor: UIColor = .purple
-        static let mentionFont: UIFont = .boldSystemFont(ofSize: 15)
-        static let hashTagColor: UIColor = .orange
-        static let hashTagFont: UIFont = .boldSystemFont(ofSize: 15)
+        public static let mentionSymbol: String = "@"
+        public static let hashTagSymbol: String = "#"
+        public static let textColor: UIColor = .black
+        public static let textFont: UIFont = .systemFont(ofSize: 15)
+        public static let mentionColor: UIColor = .purple
+        public static let mentionFont: UIFont = .boldSystemFont(ofSize: 15)
+        public static let hashTagColor: UIColor = .orange
+        public static let hashTagFont: UIFont = .boldSystemFont(ofSize: 15)
     }
     
     static let newTagNameValueKey: String = "New Tag Name Value"
