@@ -1,0 +1,14 @@
+platform :ios, '15.0'
+
+install! 'cocoapods', :warn_for_unused_master_specs_repo => false
+source 'https://cdn.cocoapods.org/'
+
+use_frameworks!
+
+def pods
+  pod 'AlamofireImage'
+end
+ 
+target 'TagTextViewExample' do
+    pods
+end
