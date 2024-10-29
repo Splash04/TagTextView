@@ -190,6 +190,8 @@ extension TagTextView.Representable.Coordinator {
         textView.isScrollEnabled = representable.scrollingBehavior.isEnable(forTextHeight: representable.calculatedHeight)
         textView.dataDetectorTypes = representable.autoDetectionTypes
         textView.allowsEditingTextAttributes = representable.allowsRichText
+        textView.textLengthLimit = representable.textLengthLimit
+        textView.mentionMinLength = representable.mentionMinLength
         
         textView.textViewAttributes = [
             NSAttributedString.Key.foregroundColor: representable.foregroundColor,

@@ -37,10 +37,12 @@ public struct TagTextView: View {
     var enablesReturnKeyAutomatically: Bool?
     var autoDetectionTypes: UIDataDetectorTypes = []
     var allowRichText: Bool
+    var textLengthLimit: Int?
     
     var mentionSymbol: String = UITagTextView.Constants.Defaults.mentionSymbol
     var mentionForegroundColor: UIColor = UITagTextView.Constants.Defaults.mentionColor
     var mentionFont: UIFont = UITagTextView.Constants.Defaults.mentionFont
+    var mentionMinLength: Int = UITagTextView.Constants.Defaults.minMentionLength
     
     var hashTagSymbol: String = UITagTextView.Constants.Defaults.hashTagSymbol
     var hashTagForegroundColor: UIColor = UITagTextView.Constants.Defaults.hashTagColor
@@ -153,9 +155,11 @@ public struct TagTextView: View {
             enablesReturnKeyAutomatically: enablesReturnKeyAutomatically,
             autoDetectionTypes: autoDetectionTypes,
             allowsRichText: allowRichText,
+            textLengthLimit: textLengthLimit,
             mentionSymbol: mentionSymbol,
             mentionForegroundColor: mentionForegroundColor,
             mentionFont: mentionFont,
+            mentionMinLength: mentionMinLength,
             hashTagSymbol: hashTagSymbol,
             hashTagForegroundColor: hashTagForegroundColor,
             hashTagFont: hashTagFont,

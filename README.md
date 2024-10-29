@@ -22,7 +22,7 @@ it, simply add the following line to your Podfile:
 For the main app target:
 
 ```ruby
-pod 'TagTextView', '~> 1.0.0'
+pod 'TagTextView', '~> 1.0.1'
 ```
 
 ## Usage
@@ -52,8 +52,10 @@ TagTextView(
 }
 .foregroundColor(viewModel.inputState.textFieldStyle.text.textColor)
 .font(Constants.inputTextFont)
+.textLengthLimit(1000)
 .mentionColor(Constants.mentionColor)
 .mentionFont(Constants.inputTextFont)
+.mentionMinLength(3)
 .hashTagColor(Constants.hashTagColor)
 .hashTagFont(Constants.inputTextFont)
 .scrollingBehavior(.maxHeight(100))

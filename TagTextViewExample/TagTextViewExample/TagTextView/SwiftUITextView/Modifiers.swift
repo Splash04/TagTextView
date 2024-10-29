@@ -9,6 +9,14 @@ public extension TagTextView {
         view.allowRichText = enabled
         return view
     }
+    
+    /// Specifies max text length
+    /// - Parameter lengthLimit: number of allowed simbols
+    func textLengthLimit(_ length: Int) -> TagTextView {
+        var view = self
+        view.textLengthLimit = length
+        return view
+    }
 
     /// Specify a placeholder text
     /// - Parameter placeholder: The placeholder text
@@ -112,6 +120,14 @@ public extension TagTextView {
     func mentionColor(_ color: UIColor) -> TagTextView {
         var view = self
         view.mentionForegroundColor = color
+        return view
+    }
+    
+    /// Min number of symbols that will be using in tag if input field has limited length
+    /// - Parameter length: number of simbols (included mention simbol: @)
+    func mentionMinLength(_ length: Int) -> TagTextView {
+        var view = self
+        view.mentionMinLength = length
         return view
     }
     

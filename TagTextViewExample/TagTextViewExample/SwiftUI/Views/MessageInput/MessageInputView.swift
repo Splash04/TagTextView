@@ -33,8 +33,10 @@ struct MessageInputView: View {
             }
             .foregroundColor(viewModel.inputState.textFieldStyle.text.textColor)
             .font(Constants.inputTextFont)
+            .textLengthLimit(1000)
             .mentionColor(Constants.mentionColor)
             .mentionFont(Constants.inputTextFont)
+            .mentionMinLength(3)
             .hashTagColor(Constants.hashTagColor)
             .hashTagFont(Constants.inputTextFont)
             .scrollingBehavior(.maxHeight(100))

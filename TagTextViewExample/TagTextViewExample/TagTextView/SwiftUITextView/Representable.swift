@@ -21,10 +21,12 @@ public extension TagTextView {
         let enablesReturnKeyAutomatically: Bool?
         var autoDetectionTypes: UIDataDetectorTypes = []
         var allowsRichText: Bool
+        let textLengthLimit: Int?
         
         let mentionSymbol: String
         let mentionForegroundColor: UIColor
         let mentionFont: UIFont
+        let mentionMinLength: Int
         
         let hashTagSymbol: String
         let hashTagForegroundColor: UIColor

@@ -24,6 +24,8 @@ open class UITagTextView: UITextView {
     public private(set) var arrTags: [TagModel] = []
     open var dpTagDelegate: TagTextViewDelegate?
     open var allowsHashTagUsingSpace: Bool = true
+    open var textLengthLimit: Int?
+    open var mentionMinLength: Int = Constants.Defaults.minMentionLength
     
     private var currentTaggingRange: NSRange?
     private var currentTaggingText: String? {
@@ -70,21 +72,46 @@ public extension UITagTextView {
         let origin = (allText as NSString).substring(with: range)
         let tag = isHashTag ? hashTagSymbol.appending(tagText) : mentionSymbol.appending(tagText)
         let replace = isAppendSpace ? tag.appending(" ") : tag
-        let changed = (allText as NSString).replacingCharacters(in: range, with: replace)
-        let tagRange = NSRange(location: range.location, length: tag.utf16.count)
         
-        let dpTag = TagModel(id: id, name: tagText, range: tagRange, data: data, isHashTag: isHashTag, customTextAttributes: customTextAttributes)
+        let newText: String
+        let newTagRange: NSRange
+        if let textLengthLimit { // If limit enabled -> check reult text length
+            let resultTextLength =
+            allText.utf16.count // all text in TextField
+            - origin.utf16.count // entered part of the tag
+            + replace.utf16.count // full tag text length
+            
+            if resultTextLength > textLengthLimit { // result text with tag will exceed limit -> cut tag text to be in the limit
+                let availableTagLength =
+                textLengthLimit
+                - (allText.utf16.count - origin.utf16.count) // text in TextView without entered sumbols of the tag
+                
+                let endIndex = String.Index(utf16Offset: availableTagLength, in: tag)
+                let newTag = String(tag[..<endIndex])
+                
+                newText = (allText as NSString).replacingCharacters(in: range, with: newTag)
+                newTagRange = NSRange(location: range.location, length: newTag.utf16.count)
+            } else {
+                newText = (allText as NSString).replacingCharacters(in: range, with: replace)
+                newTagRange = NSRange(location: range.location, length: tag.utf16.count)
+            }
+        } else {
+            newText = (allText as NSString).replacingCharacters(in: range, with: replace)
+            newTagRange = NSRange(location: range.location, length: tag.utf16.count)
+        }
+        
+        let dpTag = TagModel(id: id, name: tagText, range: newTagRange, data: data, isHashTag: isHashTag, customTextAttributes: customTextAttributes)
         arrTags.append(dpTag)
         for i in 0..<arrTags.count - 1 {
             var location = arrTags[i].range.location
             let length = arrTags[i].range.length
-            if location > tagRange.location {
+            if location > newTagRange.location {
                 location += replace.count - origin.count
                 arrTags[i].range = NSRange(location: location, length: length)
             }
         }
         
-        text = changed
+        text = newText
         updateAttributeText(selectedLocation: range.location + replace.count)
         dpTagDelegate?.dpTagTextView(self, didInsertTag: dpTag)
         dpTagDelegate?.dpTagTextView(self, didChangedTags: arrTags)
@@ -209,9 +236,44 @@ private extension UITagTextView {
             return
         }
         
+        let isTaggingAvailable: Bool
+        if let textLengthLimit { // If limit configured
+            let availableTextLength = textLengthLimit - text.utf16.count
+            let tagTextLength = characters.count
+            if availableTextLength >= mentionMinLength ||
+                tagTextLength >= mentionMinLength { // If min number of characters for tag is already reached -> just enable tagging
+                isTaggingAvailable = true
+            } else {
+                let minNeededLength = mentionMinLength - tagTextLength
+                if (text.utf16.count + minNeededLength) > textLengthLimit { // If current text length + needed space for tag is more then limit -> disable tagging
+                    isTaggingAvailable = false
+                } else {
+                    isTaggingAvailable = true
+                }
+            }
+        } else {
+            isTaggingAvailable = true
+        }
+        
+        guard isTaggingAvailable else {
+            currentTaggingRange = nil
+            currentTaggingText = nil
+            return
+        }
+        
         let data = matchedData(taggingCharacters: characters, selectedLocation: selectedLocation, taggingText: taggingText)
-        currentTaggingRange = data.0
-        currentTaggingText = data.1
+        if let textLengthLimit,
+           let newTagLocation = data.0?.location,
+           let existingTag = arrTags.first(where: { $0.range.location == newTagLocation }),
+           (existingTag.range.location + existingTag.range.length) == textLengthLimit,
+           let newTagText = data.1,
+           existingTag.name.hasPrefix(newTagText) {
+            currentTaggingRange = nil
+            currentTaggingText = nil
+        } else {
+            currentTaggingRange = data.0
+            currentTaggingText = data.1
+        }
     }
     
     func updateAttributeText(selectedLocation: Int) {
@@ -318,6 +380,13 @@ extension UITagTextView: UITextViewDelegate {
     }
     
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if let textLengthLimit, textLengthLimit >= 0 {
+            let currentText = textView.text ?? ""
+            guard let stringRange = Range(range, in: currentText) else { return false }
+            let changedText = currentText.replacingCharacters(in: stringRange, with: text)
+            guard changedText.count <= textLengthLimit else { return false }
+        }
+        
         if text.isEmpty {
             // check tag in list. if in list, we will replace mention or hashtag and remove from list
             if let currentTag = arrTags.first(where: { $0.range.location <= range.location && $0.range.location + $0.range.length > range.location
@@ -402,6 +471,7 @@ public extension UITagTextView.Constants {
         public static let mentionFont: UIFont = .boldSystemFont(ofSize: 15)
         public static let hashTagColor: UIColor = .orange
         public static let hashTagFont: UIFont = .boldSystemFont(ofSize: 15)
+        public static let minMentionLength: Int = 3
     }
     
     static let newTagNameValueKey: String = "New Tag Name Value"
