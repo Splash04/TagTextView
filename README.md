@@ -22,7 +22,7 @@ it, simply add the following line to your Podfile:
 For the main app target:
 
 ```ruby
-pod 'TagTextView', '~> 1.0.1'
+pod 'TagTextView', '~> 1.0.2'
 ```
 
 ## Usage
