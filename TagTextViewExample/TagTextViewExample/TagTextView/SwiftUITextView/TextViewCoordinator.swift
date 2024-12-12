@@ -134,6 +134,7 @@ public extension TagTextView.Representable {
         public func textViewDidEndEditing(_ textView: UITagTextView) {
             // this check is to ensure we always commit text when we're not using a closure
             if onCommit != nil {
+                originalText = NSAttributedString(attributedString: textView.attributedText)
                 text.wrappedValue = originalText
             }
             onDidEndEditing?()
