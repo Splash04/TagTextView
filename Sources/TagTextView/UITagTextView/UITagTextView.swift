@@ -137,6 +137,24 @@ public extension UITagTextView {
         self.arrTags = arrTags
         updateAttributeText(selectedLocation: -1)
     }
+    
+    func setTag(_ arrTag: TagModel) {
+        setTags([arrTag])
+    }
+    
+    func setTags(_ arrTags: [TagModel]) {
+        self.arrTags = arrTags
+        updateAttributeText(selectedLocation: -1)
+    }
+    
+    func addTag(_ arrTag: TagModel) {
+        addTags([arrTag])
+    }
+    
+    func addTags(_ arrTags: [TagModel]) {
+        self.arrTags.append(contentsOf: arrTags)
+        updateAttributeText(selectedLocation: -1)
+    }
 
     /// This will remove all the previously cached tags. Always use this function to clear the textfields with actions
     func clearText() {
@@ -474,6 +492,11 @@ public extension UITagTextView.Constants {
         public static let minMentionLength: Int = 3
     }
     
-    static let newTagNameValueKey: String = "New Tag Name Value"
-    static let newTagPersonIdValueKey: String = "New Tag Person Id Value"
+    static let newTagNameValueKey: String = "new_tag_name_value"
+    static let newTagPersonIdValueKey: String = "new_tag_person_id_value"
+    static let newTagModelKey: String = "new_tag_model"
+    static let newTagModelsListKey: String = "new_tag_models_list"
+    static let newTextKey: String = "new_text"
+    static let actionTypeKey: String = "action_type"
+    static let viewIdKey: String = "view_id"
 }

@@ -38,6 +38,7 @@ public struct TagTextView: View {
     var autoDetectionTypes: UIDataDetectorTypes = []
     var allowRichText: Bool
     var textLengthLimit: Int?
+    var viewId: Int = 0
     
     var mentionSymbol: String = UITagTextView.Constants.Defaults.mentionSymbol
     var mentionForegroundColor: UIColor = UITagTextView.Constants.Defaults.mentionColor
@@ -156,6 +157,7 @@ public struct TagTextView: View {
             autoDetectionTypes: autoDetectionTypes,
             allowsRichText: allowRichText,
             textLengthLimit: textLengthLimit,
+            viewId: viewId,
             mentionSymbol: mentionSymbol,
             mentionForegroundColor: mentionForegroundColor,
             mentionFont: mentionFont,

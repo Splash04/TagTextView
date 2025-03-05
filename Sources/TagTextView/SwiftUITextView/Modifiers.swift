@@ -1,6 +1,14 @@
 import SwiftUI
 
 public extension TagTextView {
+    
+    /// Specifies max text length
+    /// - Parameter viewId: tag number for UITextView that will be used to identify the view
+    func setViewId(_ viewId: Int) -> TagTextView {
+        var view = self
+        view.viewId = viewId
+        return view
+    }
 
     /// Specifies whether or not this view allows rich text
     /// - Parameter enabled: If `true`, rich text editing controls will be enabled for the user
@@ -12,7 +20,7 @@ public extension TagTextView {
     
     /// Specifies max text length
     /// - Parameter lengthLimit: number of allowed simbols
-    func textLengthLimit(_ length: Int) -> TagTextView {
+    func textLengthLimit(_ length: Int?) -> TagTextView {
         var view = self
         view.textLengthLimit = length
         return view

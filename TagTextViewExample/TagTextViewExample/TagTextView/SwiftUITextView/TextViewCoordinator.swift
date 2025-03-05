@@ -8,19 +8,77 @@ public extension Notification.Name {
 }
 
 public extension TagTextView {
-    static func addTag(name: String, id: Int?) {
-        var userInfo: [AnyHashable: Any] = [:]
-        
-        userInfo[UITagTextView.Constants.newTagNameValueKey] = name
+    
+    enum ActionType: String, Equatable, Hashable {
+        case addTagName = "add_tag_name"
+        case addSingleTag = "add_single_tag"
+        case addTagsList = "add_tags_list"
+        case setTextWithTags = "set_text_with_tags"
+        case setSingleTag = "set_single_tag"
+        case setTagsList = "set_tags_list"
+    }
+    
+    static func addTag(name: String, id: Int?, viewId: Int = -1) {
+        var userInfo: [AnyHashable: Any] = [
+            UITagTextView.Constants.viewIdKey : viewId,
+            UITagTextView.Constants.actionTypeKey : ActionType.addTagName.rawValue,
+            UITagTextView.Constants.newTagNameValueKey : name
+        ]
         
         if let personId = id, personId >= 0 {
             userInfo[UITagTextView.Constants.newTagPersonIdValueKey] = personId
         }
         
-        addTag(userInfo: userInfo)
+        updateViewNotification(userInfo: userInfo)
     }
     
-    static func addTag(userInfo: [AnyHashable: Any]) {
+    static func addTag(viewModel: TagModel, viewId: Int = -1) {
+        let userInfo: [AnyHashable: Any] = [
+            UITagTextView.Constants.viewIdKey : viewId,
+            UITagTextView.Constants.actionTypeKey : ActionType.addSingleTag.rawValue,
+            UITagTextView.Constants.newTagModelKey : viewModel
+        ]
+        updateViewNotification(userInfo: userInfo)
+    }
+    
+    static func addTags(list: [TagModel], viewId: Int = -1) {
+        let userInfo: [AnyHashable: Any] = [
+            UITagTextView.Constants.viewIdKey : viewId,
+            UITagTextView.Constants.actionTypeKey : ActionType.addTagsList.rawValue,
+            UITagTextView.Constants.newTagModelsListKey : list
+        ]
+        updateViewNotification(userInfo: userInfo)
+    }
+    
+    static func setText(text: String, tags: [TagModel], viewId: Int = -1) {
+        let userInfo: [AnyHashable: Any] = [
+            UITagTextView.Constants.viewIdKey : viewId,
+            UITagTextView.Constants.actionTypeKey : ActionType.setTextWithTags.rawValue,
+            UITagTextView.Constants.newTextKey : text,
+            UITagTextView.Constants.newTagModelsListKey : tags
+        ]
+        updateViewNotification(userInfo: userInfo)
+    }
+    
+    static func setTag(viewModel: TagModel, viewId: Int = -1) {
+        let userInfo: [AnyHashable: Any] = [
+            UITagTextView.Constants.viewIdKey : viewId,
+            UITagTextView.Constants.actionTypeKey : ActionType.setSingleTag.rawValue,
+            UITagTextView.Constants.newTagModelKey : viewModel
+        ]
+        updateViewNotification(userInfo: userInfo)
+    }
+    
+    static func setTags(list: [TagModel], viewId: Int = -1) {
+        let userInfo: [AnyHashable: Any] = [
+            UITagTextView.Constants.viewIdKey : viewId,
+            UITagTextView.Constants.actionTypeKey : ActionType.setTagsList.rawValue,
+            UITagTextView.Constants.newTagModelsListKey : list
+        ]
+        updateViewNotification(userInfo: userInfo)
+    }
+    
+    static func updateViewNotification(userInfo: [AnyHashable: Any]) {
         NotificationCenter.default.post(
             name: Notification.Name.addTagNotification,
             object: nil,
@@ -32,10 +90,87 @@ public extension TagTextView {
 fileprivate extension TagTextView.Representable.Coordinator {
     @objc func receivedAddTagNotification(notification: NSNotification) {
         // Take Action on Notification
-        if let userInfo = notification.userInfo,
-           let newTagValue = userInfo[UITagTextView.Constants.newTagNameValueKey] as? String {
-            textView.addTag(tagText: newTagValue, data: userInfo)
+        guard let userInfo = notification.userInfo,
+              userInfo.count > 0 else {
+            return
         }
+        
+        if let viewId = userInfo[UITagTextView.Constants.newTagNameValueKey] as? Int,
+           viewId >= 0 {
+            guard textView.tag == viewId else {
+                return
+            }
+        }
+        
+        if let actionTypeKey = userInfo[UITagTextView.Constants.actionTypeKey] as? String,
+           let actionType = TagTextView.ActionType(rawValue: actionTypeKey) {
+            switch actionType {
+            case .addTagName:
+                _ = addTagName(userInfo: userInfo)
+            case .addSingleTag:
+                _ = addSingleTag(userInfo: userInfo)
+            case .addTagsList:
+                _ = addTagsList(userInfo: userInfo)
+            case .setTextWithTags:
+                _ = setTextWithTags(userInfo: userInfo)
+            case .setSingleTag:
+                _ = setSingleTag(userInfo: userInfo)
+            case .setTagsList:
+                _ = setTagsList(userInfo: userInfo)
+            }
+        }
+    }
+    
+    func addTagName(userInfo: [AnyHashable: Any]) -> Bool {
+        guard let newTagName = userInfo[UITagTextView.Constants.newTagNameValueKey] as? String else {
+            return false
+        }
+        textView.addTag(tagText: newTagName, data: userInfo)
+        return true
+    }
+    
+    func addSingleTag(userInfo: [AnyHashable: Any]) -> Bool {
+        guard let newTag = userInfo[UITagTextView.Constants.newTagModelKey] as? TagModel else {
+            return false
+        }
+        textView.addTag(newTag)
+        return true
+    }
+    
+    func addTagsList(userInfo: [AnyHashable: Any]) -> Bool {
+        guard let newTagsList = userInfo[UITagTextView.Constants.newTagModelsListKey] as? [TagModel],
+              !newTagsList.isEmpty else {
+            return false
+        }
+        textView.addTags(newTagsList)
+        return true
+    }
+    
+    func setTextWithTags(userInfo: [AnyHashable: Any]) -> Bool {
+        guard let newText = userInfo[UITagTextView.Constants.newTextKey] as? String,
+              let newTagsList = userInfo[UITagTextView.Constants.newTagModelsListKey] as? [TagModel],
+              !newTagsList.isEmpty else {
+            return false
+        }
+        textView.setText(newText, arrTags: newTagsList)
+        return true
+    }
+    
+    func setSingleTag(userInfo: [AnyHashable: Any]) -> Bool {
+        guard let newTag = userInfo[UITagTextView.Constants.newTagModelKey] as? TagModel else {
+            return false
+        }
+        textView.setTag(newTag)
+        return true
+    }
+    
+    func setTagsList(userInfo: [AnyHashable: Any]) -> Bool {
+        guard let newTagsList = userInfo[UITagTextView.Constants.newTagModelsListKey] as? [TagModel],
+              !newTagsList.isEmpty else {
+            return false
+        }
+        textView.setTags(newTagsList)
+        return true
     }
 }
 
@@ -65,6 +200,7 @@ public extension TagTextView.Representable {
 
         init(text: Binding<NSAttributedString>,
              tags: Binding<[TagModel]>,
+             viewId: Int,
              calculatedHeight: Binding<CGFloat>,
              shouldEditInRange: ((Range<String.Index>, String) -> Bool)?,
              onEditingChanged: (() -> Void)?,
@@ -77,6 +213,7 @@ public extension TagTextView.Representable {
              didSelectTag: ((TagModel) -> Void)?,
              didChangedTags: (([TagModel]) -> Void)?) {
             textView = UIKitTagTextView()
+            textView.tag = viewId
             textView.backgroundColor = .clear
             textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
@@ -193,6 +330,7 @@ extension TagTextView.Representable.Coordinator {
         textView.allowsEditingTextAttributes = representable.allowsRichText
         textView.textLengthLimit = representable.textLengthLimit
         textView.mentionMinLength = representable.mentionMinLength
+        textView.tag = representable.viewId
         
         textView.textViewAttributes = [
             NSAttributedString.Key.foregroundColor: representable.foregroundColor,

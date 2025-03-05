@@ -22,6 +22,7 @@ public extension TagTextView {
         var autoDetectionTypes: UIDataDetectorTypes = []
         var allowsRichText: Bool
         let textLengthLimit: Int?
+        let viewId: Int
         
         let mentionSymbol: String
         let mentionForegroundColor: UIColor
@@ -56,6 +57,7 @@ public extension TagTextView {
             Coordinator(
                 text: $text,
                 tags: $tags,
+                viewId: viewId,
                 calculatedHeight: $calculatedHeight,
                 shouldEditInRange: shouldEditInRange,
                 onEditingChanged: onEditingChanged,

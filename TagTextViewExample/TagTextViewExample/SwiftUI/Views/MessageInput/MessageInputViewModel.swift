@@ -126,11 +126,12 @@ final class MessageInputViewModel: ObservableObject {
     
     func selectCharacterSuggesion(_ viewModel: FilmCharacter) {
         let userInfo: [AnyHashable: Any] = [
+            UITagTextView.Constants.actionTypeKey : TagTextView.ActionType.addTagName.rawValue,
             UITagTextView.Constants.newTagNameValueKey : viewModel.name ?? .empty,
             UITagTextView.Constants.newTagPersonIdValueKey : viewModel.id
         ]
         
-        TagTextView.addTag(userInfo: userInfo)
+        TagTextView.updateViewNotification(userInfo: userInfo)
     }
     
     func clearInput() {
