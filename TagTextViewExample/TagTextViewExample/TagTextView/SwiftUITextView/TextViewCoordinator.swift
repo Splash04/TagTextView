@@ -95,7 +95,7 @@ fileprivate extension TagTextView.Representable.Coordinator {
             return
         }
         
-        if let viewId = userInfo[UITagTextView.Constants.newTagNameValueKey] as? Int,
+        if let viewId = userInfo[UITagTextView.Constants.viewIdKey] as? Int,
            viewId >= 0 {
             guard textView.tag == viewId else {
                 return
