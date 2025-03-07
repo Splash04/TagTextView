@@ -2,6 +2,14 @@ import SwiftUI
 
 public extension TagTextView {
     
+    /// Specifies whether or not keyboard should be automatically hidden after user press commit button
+    /// - Parameter hideKeyboardOnCommit: If `true`, will call resignFirstResponder after user press commit button
+    func setHideKeyboardOnCommit(_ hideKeyboardOnCommit: Bool) -> TagTextView {
+        var view = self
+        view.hideKeyboardOnCommit = hideKeyboardOnCommit
+        return view
+    }
+    
     /// Specifies max text length
     /// - Parameter viewId: tag number for UITextView that will be used to identify the view
     func setViewId(_ viewId: Int) -> TagTextView {

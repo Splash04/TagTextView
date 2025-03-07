@@ -27,6 +27,7 @@ struct ChatScreen: ViewControllable {
                         .opacity(0.05)
                         .transition(.opacity)
                         .onTapGesture {
+                            viewModel.messageInputViewModel.isFirstResponder = nil
                             hideKeyboard()
                         }
                 }
