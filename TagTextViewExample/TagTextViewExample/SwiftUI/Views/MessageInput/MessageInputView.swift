@@ -14,6 +14,7 @@ struct MessageInputView: View {
             TagTextView(
                 $viewModel.inputText,
                 tags: $viewModel.selectedTagsList,
+                isFirstResponder: $viewModel.isFirstResponder,
                 onDidBeginEditing: {
                     viewModel.inputState = .selected
                 },

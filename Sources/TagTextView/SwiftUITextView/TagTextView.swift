@@ -7,6 +7,7 @@ public struct TagTextView: View {
     @Binding private var text: NSAttributedString
     @Binding private var isEmpty: Bool
     @Binding private var tags: [TagModel]
+    @Binding private var isFirstResponder: Bool?
 
     @State private var calculatedHeight: CGFloat = 44
 
@@ -59,6 +60,7 @@ public struct TagTextView: View {
     ///   - onCommit: If this is provided, the field will automatically lose focus when the return key is pressed
     public init(_ text: Binding<String>,
                 tags: Binding<[TagModel]>,
+                isFirstResponder: Binding<Bool?> = .constant(nil),
                 shouldEditInRange: ((Range<String.Index>, String) -> Bool)? = nil,
                 onEditingChanged: (() -> Void)? = nil,
                 onCommit: (() -> Void)? = nil,
@@ -84,6 +86,7 @@ public struct TagTextView: View {
         )
         
         self._tags = tags
+        self._isFirstResponder = isFirstResponder
         self.onCommit = onCommit
         self.shouldEditInRange = shouldEditInRange
         self.onEditingChanged = onEditingChanged
@@ -106,6 +109,7 @@ public struct TagTextView: View {
     ///   - onCommit: If this is provided, the field will automatically lose focus when the return key is pressed
     public init(_ text: Binding<NSAttributedString>,
                 tags: Binding<[TagModel]>,
+                isFirstResponder: Binding<Bool?> = .constant(nil),
                 onEditingChanged: (() -> Void)? = nil,
                 onCommit: (() -> Void)? = nil,
                 onDidBeginEditing: (() -> Void)? = nil,
@@ -122,6 +126,7 @@ public struct TagTextView: View {
         )
         
         self._tags = tags
+        self._isFirstResponder = isFirstResponder
         
         self.onCommit = onCommit
         self.onEditingChanged = onEditingChanged
@@ -142,6 +147,7 @@ public struct TagTextView: View {
             text: $text,
             tags: $tags,
             calculatedHeight: $calculatedHeight,
+            isFirstResponder: $isFirstResponder,
             foregroundColor: foregroundColor,
             autocapitalization: autocapitalization,
             multilineTextAlignment: multilineTextAlignment,

@@ -13,6 +13,16 @@ public class HostingController<ContentView>: UIHostingController<ContentView> wh
         self.rootView.viewWillAppear(viewController: self, animated: animated)
     }
     
+    override public func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.rootView.viewDidAppear(viewController: self, animated: animated)
+    }
+    
+    override public func viewWillDisappear(_ animated: Bool) {
+        self.rootView.viewWillDisappear(viewController: self, animated: true)
+        super.viewWillDisappear(animated)
+    }
+    
     override public func viewDidDisappear(_ animated: Bool) {
         self.rootView.viewDidDisappear(viewController: self, animated: true)
         super.viewDidDisappear(animated)

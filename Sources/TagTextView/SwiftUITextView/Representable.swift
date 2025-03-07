@@ -6,6 +6,7 @@ public extension TagTextView {
         @Binding var text: NSAttributedString
         @Binding var tags: [TagModel]
         @Binding var calculatedHeight: CGFloat
+        @Binding var isFirstResponder: Bool?
 
         let foregroundColor: UIColor
         let autocapitalization: UITextAutocapitalizationType
@@ -57,6 +58,7 @@ public extension TagTextView {
             Coordinator(
                 text: $text,
                 tags: $tags,
+                isFirstResponder: $isFirstResponder,
                 viewId: viewId,
                 calculatedHeight: $calculatedHeight,
                 shouldEditInRange: shouldEditInRange,

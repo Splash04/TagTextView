@@ -57,6 +57,14 @@ struct ChatScreen: ViewControllable {
     func loadView() {
         holder.viewController?.navigationItem.title = "SwiftUI Chat"
     }
+    
+    func viewDidAppear(viewController: UIViewController, animated: Bool) {
+        viewModel.messageInputViewModel.isFirstResponder = true
+    }
+    
+    func viewWillDisappear(viewController: UIViewController, animated: Bool) {
+        viewModel.messageInputViewModel.isFirstResponder = false
+    }
 }
 
 #if DEBUG

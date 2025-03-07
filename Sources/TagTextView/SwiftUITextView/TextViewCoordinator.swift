@@ -95,7 +95,7 @@ fileprivate extension TagTextView.Representable.Coordinator {
             return
         }
         
-        if let viewId = userInfo[UITagTextView.Constants.newTagNameValueKey] as? Int,
+        if let viewId = userInfo[UITagTextView.Constants.viewIdKey] as? Int,
            viewId >= 0 {
             guard textView.tag == viewId else {
                 return
@@ -185,6 +185,7 @@ public extension TagTextView.Representable {
         private var text: Binding<NSAttributedString>
         private var tags: Binding<[TagModel]>
         private var calculatedHeight: Binding<CGFloat>
+        private var isFirstResponder: Binding<Bool?>
 
         var onCommit: (() -> Void)?
         var onEditingChanged: (() -> Void)?
@@ -200,6 +201,7 @@ public extension TagTextView.Representable {
 
         init(text: Binding<NSAttributedString>,
              tags: Binding<[TagModel]>,
+             isFirstResponder: Binding<Bool?>,
              viewId: Int,
              calculatedHeight: Binding<CGFloat>,
              shouldEditInRange: ((Range<String.Index>, String) -> Bool)?,
@@ -219,6 +221,7 @@ public extension TagTextView.Representable {
 
             self.text = text
             self.tags = tags
+            self.isFirstResponder = isFirstResponder
             self.calculatedHeight = calculatedHeight
             self.shouldEditInRange = shouldEditInRange
             self.onEditingChanged = onEditingChanged
@@ -376,6 +379,15 @@ extension TagTextView.Representable.Coordinator {
         recalculateHeight()
         textView.setNeedsDisplay()
         textView.recalculateAttributes()
+        
+        if let isFirstResponder = representable.isFirstResponder,
+           isFirstResponder != textView.isFirstResponder {
+            if isFirstResponder {
+                textView.becomeFirstResponder()
+            } else {
+                textView.resignFirstResponder()
+            }
+        }
     }
 
     private func recalculateHeight() {

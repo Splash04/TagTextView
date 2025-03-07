@@ -6,6 +6,8 @@ public protocol ViewControllable: View {
   
     func loadView()
     func viewWillAppear(viewController: UIViewController, animated: Bool)
+    func viewDidAppear(viewController: UIViewController, animated: Bool)
+    func viewWillDisappear(viewController: UIViewController, animated: Bool)
     func viewDidDisappear(viewController: UIViewController, animated: Bool)
 }
 
@@ -19,5 +21,7 @@ public extension ViewControllable {
   
     func loadView() {}
     func viewWillAppear(viewController: UIViewController, animated: Bool) {}
+    func viewDidAppear(viewController: UIViewController, animated: Bool) {}
+    func viewWillDisappear(viewController: UIViewController, animated: Bool) {}
     func viewDidDisappear(viewController: UIViewController, animated: Bool) {}
 }

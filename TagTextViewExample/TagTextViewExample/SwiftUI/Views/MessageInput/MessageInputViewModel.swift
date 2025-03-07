@@ -9,6 +9,7 @@ final class MessageInputViewModel: ObservableObject {
     @Published var inputState: InputViewState = .base
     @Published var searchCharacterList: [FilmCharacter] = []
     @Published var selectedTagsList: [TagModel] = []
+    @Published var isFirstResponder: Bool?
     
     let placeholder: String?
     
