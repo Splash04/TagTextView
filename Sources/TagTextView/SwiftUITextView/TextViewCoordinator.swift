@@ -198,10 +198,12 @@ public extension TagTextView.Representable {
         var didRemoveTag: ((TagModel) -> Void)?
         var didSelectTag: ((TagModel) -> Void)?
         var didChangedTags: (([TagModel]) -> Void)?
+        var hideKeyboardOnCommit: Bool
 
         init(text: Binding<NSAttributedString>,
              tags: Binding<[TagModel]>,
              isFirstResponder: Binding<Bool?>,
+             hideKeyboardOnCommit: Bool,
              viewId: Int,
              calculatedHeight: Binding<CGFloat>,
              shouldEditInRange: ((Range<String.Index>, String) -> Bool)?,
@@ -221,6 +223,7 @@ public extension TagTextView.Representable {
 
             self.text = text
             self.tags = tags
+            self.hideKeyboardOnCommit = hideKeyboardOnCommit
             self.isFirstResponder = isFirstResponder
             self.calculatedHeight = calculatedHeight
             self.shouldEditInRange = shouldEditInRange
@@ -260,7 +263,9 @@ public extension TagTextView.Representable {
             if onCommit != nil, text == "\n" {
                 onCommit?()
                 originalText = NSAttributedString(attributedString: textView.attributedText)
-                textView.resignFirstResponder()
+                if hideKeyboardOnCommit {
+                    textView.resignFirstResponder()
+                }
                 return false
             }
             

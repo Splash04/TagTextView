@@ -24,6 +24,7 @@ public extension TagTextView {
         var allowsRichText: Bool
         let textLengthLimit: Int?
         let viewId: Int
+        let hideKeyboardOnCommit: Bool
         
         let mentionSymbol: String
         let mentionForegroundColor: UIColor
@@ -59,6 +60,7 @@ public extension TagTextView {
                 text: $text,
                 tags: $tags,
                 isFirstResponder: $isFirstResponder,
+                hideKeyboardOnCommit: hideKeyboardOnCommit,
                 viewId: viewId,
                 calculatedHeight: $calculatedHeight,
                 shouldEditInRange: shouldEditInRange,
