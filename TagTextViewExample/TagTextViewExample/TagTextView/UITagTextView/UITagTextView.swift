@@ -482,6 +482,8 @@ extension UITagTextView: UIGestureRecognizerDelegate {
 public extension UITagTextView { enum Constants {} }
 public extension UITagTextView.Constants {
     enum Defaults {
+        public static let mentionSymbol: String = .mention
+        public static let hashTagSymbol: String = .hashTag
         public static let textColor: UIColor = .black
         public static let textFont: UIFont = .systemFont(ofSize: 15)
         public static let mentionColor: UIColor = .purple
