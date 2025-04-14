@@ -42,12 +42,12 @@ public struct TagTextView: View {
     var viewId: Int = 0
     var hideKeyboardOnCommit: Bool = false
     
-    var mentionSymbol: String = UITagTextView.Constants.Defaults.mentionSymbol
+    var mentionSymbol: String = .mention
     var mentionForegroundColor: UIColor = UITagTextView.Constants.Defaults.mentionColor
     var mentionFont: UIFont = UITagTextView.Constants.Defaults.mentionFont
     var mentionMinLength: Int = UITagTextView.Constants.Defaults.minMentionLength
     
-    var hashTagSymbol: String = UITagTextView.Constants.Defaults.hashTagSymbol
+    var hashTagSymbol: String = .hashTag
     var hashTagForegroundColor: UIColor = UITagTextView.Constants.Defaults.hashTagColor
     var hashTagFont: UIFont = UITagTextView.Constants.Defaults.hashTagFont
 

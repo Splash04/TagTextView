@@ -4,8 +4,8 @@ open class UITagTextView: UITextView {
     
     // ******************************* MARK: - Properties
     
-    open var mentionSymbol: String = Constants.Defaults.mentionSymbol
-    open var hashTagSymbol: String = Constants.Defaults.hashTagSymbol
+    open var mentionSymbol: String = .mention
+    open var hashTagSymbol: String = .hashTag
     open var textViewAttributes: [NSAttributedString.Key: Any] = [
         NSAttributedString.Key.foregroundColor: Constants.Defaults.textColor,
         NSAttributedString.Key.font: Constants.Defaults.textFont
@@ -225,8 +225,8 @@ private extension UITagTextView {
         } else {
             taggingText = String()
         }
-        let space: Character = " "
-        let lineBrak: Character = "\n"
+        let space: Character = .space
+        let lineBreak: Character = .lineBreak
         var tagable: Bool = false
         var characters: [Character] = []
         
@@ -241,7 +241,7 @@ private extension UITagTextView {
                 isHashTag = true
                 tagable = true
                 break
-            } else if char == space || char == lineBrak {
+            } else if char == space || char == lineBreak {
                 tagable = false
                 break
             }
@@ -371,7 +371,7 @@ private extension UITagTextView {
     }
     
     func addHashTagWithSpace(_ replacementText: String, _ range: NSRange) {
-        if isHashTag && replacementText == " " && allowsHashTagUsingSpace {
+        if isHashTag && replacementText == .space && allowsHashTagUsingSpace {
             let selectedLocation = selectedRange.location
             let newText = (text as NSString).replacingCharacters(in: range, with: replacementText)
             let taggingText = (newText as NSString).substring(with: NSRange(location: 0, length: selectedLocation + 1))
@@ -402,7 +402,8 @@ extension UITagTextView: UITextViewDelegate {
             let currentText = textView.text ?? ""
             guard let stringRange = Range(range, in: currentText) else { return false }
             let changedText = currentText.replacingCharacters(in: stringRange, with: text)
-            guard changedText.count <= textLengthLimit else { return false }
+            let isPassLimit = changedText.count <= textLengthLimit
+            guard isPassLimit || text == .lineBreak else { return false }
         }
         
         if text.isEmpty {
@@ -481,8 +482,6 @@ extension UITagTextView: UIGestureRecognizerDelegate {
 public extension UITagTextView { enum Constants {} }
 public extension UITagTextView.Constants {
     enum Defaults {
-        public static let mentionSymbol: String = "@"
-        public static let hashTagSymbol: String = "#"
         public static let textColor: UIColor = .black
         public static let textFont: UIFont = .systemFont(ofSize: 15)
         public static let mentionColor: UIColor = .purple

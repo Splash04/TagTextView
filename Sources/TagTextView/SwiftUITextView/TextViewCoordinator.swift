@@ -260,7 +260,7 @@ public extension TagTextView.Representable {
         }
 
         public func textView(_ textView: UITagTextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-            if onCommit != nil, text == "\n" {
+            if onCommit != nil, text == .lineBreak {
                 onCommit?()
                 originalText = NSAttributedString(attributedString: textView.attributedText)
                 if hideKeyboardOnCommit {

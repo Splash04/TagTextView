@@ -21,7 +21,7 @@ enum ChatUtils {
         // Hash Tag Style
         let hashTags = textWithAttributes.findHashtags()
         for hashtag in hashTags {
-            if hashtag.0 != UITagTextView.Constants.Defaults.hashTagSymbol {
+            if hashtag.0 != .hashTag {
                 attributedText.addAttributes(Constants.HashTag.textAttributes, range: hashtag.1)
             }
         }
