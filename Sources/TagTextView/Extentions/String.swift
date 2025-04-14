@@ -74,5 +74,15 @@ public extension String {
 
 internal extension String {
     static let empty = String()
-    static let space = " "
+    static let space = String(Character.space)
+    static let lineBreak: String = String(Character.lineBreak)
+    static let mention: String = String(Character.mention)
+    static let hashTag: String = String(Character.hashTag)
+}
+
+internal extension Character {
+    static let space: Character = " "
+    static let lineBreak: Character = "\n"
+    static let mention: Character = "@"
+    static let hashTag: Character = "#"
 }
