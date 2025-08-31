@@ -14,15 +14,17 @@ I was not able to find Tag TextView with need for my project functionality and S
 
 ## Installation
 
-#### CocoaPods
-
-LogsManager is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
-For the main app target:
+#### [CocoaPods](http://cocoapods.org)
 
 ```ruby
 pod 'TagTextView', '~> 1.0.2'
+```
+
+#### [Swift Package Manager](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app)
+
+
+```ruby
+https://github.com/Splash04/TagTextView.git
 ```
 
 ## Usage
@@ -71,10 +73,7 @@ TagTextView(
 See example and test projects for more details.
 
 
-
 ## Still not ready
-
-- Swift Package manager support
 
 - UIKit Example
 
