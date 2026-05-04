@@ -323,6 +323,7 @@ private extension UITagTextView {
         textStorage.setAttributes(textViewAttributes, range: fullRange)
         for dpTag in arrTags {
             let tagRange = dpTag.range
+            guard tagRange.location >= 0, tagRange.length > 0 else { continue }
             guard textStorage.length >= (tagRange.location + tagRange.length) else { continue }
             if let custom = dpTag.customTextAttributes {
                 textStorage.addAttributes(custom, range: tagRange)

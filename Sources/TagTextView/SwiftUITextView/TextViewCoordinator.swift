@@ -324,7 +324,7 @@ extension TagTextView.Representable.Coordinator {
 
         // Sync text from the binding into UITagTextView when it changes externally.
         // Compare plain strings only — tag highlight attributes live inside textStorage
-        if representable.text.string.isEmpty,
+        if textView.attributedText.string.isEmpty,
            textView.attributedText.string != representable.text.string {
            // Use clearText() (sets .text = "") so UIKit's text-input system is
            // notified correctly even while the view is first responder.
