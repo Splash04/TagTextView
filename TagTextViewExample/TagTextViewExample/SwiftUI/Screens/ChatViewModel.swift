@@ -23,6 +23,7 @@ final class ChatViewModel: ObservableObject {
     
     init() {
         setupObservables()
+        messageInputViewModel.inputText = "Message"
     }
     
     // ******************************* MARK: - Private methods

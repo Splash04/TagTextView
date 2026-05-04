@@ -323,13 +323,20 @@ extension TagTextView.Representable.Coordinator {
     func update(representable: TagTextView.Representable) {
 
         // Sync text from the binding into UITagTextView when it changes externally.
-        // Compare plain strings only — tag highlight attributes live inside textStorage
-        if textView.attributedText.string.isEmpty,
-           textView.attributedText.string != representable.text.string {
-           // Use clearText() (sets .text = "") so UIKit's text-input system is
-           // notified correctly even while the view is first responder.
-           // Setting .attributedText directly can fail to flush the display.
-           textView.clearText()
+        // Compare plain strings only — tag highlight attributes live inside textStorage.
+        // Only sync when the content actually differs to avoid fighting user typing.
+        if textView.attributedText.string != representable.text.string {
+            if representable.text.string.isEmpty {
+                // Use clearText() so UIKit's text-input system is notified correctly
+                // even while the view is first responder (setting .attributedText
+                // directly can fail to flush the visual layer on an active first responder).
+                textView.clearText()
+            } else {
+                // For initial load or programmatic text replacement, set .text directly.
+                // textViewDidChange keeps the binding in sync during normal typing,
+                // so this branch only fires when the change originates outside the view.
+                textView.text = representable.text.string
+            }
         }
 
         textView.font = representable.font

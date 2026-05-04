@@ -17,7 +17,7 @@ I was not able to find Tag TextView with need for my project functionality and S
 #### [CocoaPods](http://cocoapods.org)
 
 ```ruby
-pod 'TagTextView', '~> 1.0.5'
+pod 'TagTextView', '~> 1.0.6'
 ```
 
 #### [Swift Package Manager](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app)
