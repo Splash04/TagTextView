@@ -45,29 +45,40 @@ public extension String {
     
     func findHashtags() -> [(String, NSRange)] {
         var hashtags: [(String, NSRange)] = []
-        let regex = try? NSRegularExpression(pattern: "(#[a-zA-Z0-9_\\p{Arabic}\\p{N}]*)", options: [])
-        if let matches = regex?.matches(in: self, options: [], range: NSRange(location: 0, length: self.count)) {
+        // Use utf16.count so NSRange covers the full string including emoji/multi-byte characters.
+        let fullRange = NSRange(location: 0, length: utf16.count)
+        if let matches = String._hashtagRegex?.matches(in: self, options: [], range: fullRange) {
+            let nsString = self as NSString
             for match in matches {
-                let range = NSRange(location: match.range.location, length: match.range.length)
-                let tag = NSString(string: self).substring(with: range)
-                hashtags.append((tag, range))
+                let tag = nsString.substring(with: match.range)
+                hashtags.append((tag, match.range))
             }
         }
         return hashtags
     }
     
     func findMentions() -> [(String, NSRange)] {
-        var hashtags: [(String, NSRange)] = []
-        let regex = try? NSRegularExpression(pattern: "@[\\p{L}0-9_.]*", options: [])
-        if let matches = regex?.matches(in: self, options: [], range: NSRange(location: 0, length: self.count)) {
+        var mentions: [(String, NSRange)] = []
+        // Use utf16.count so NSRange covers the full string including emoji/multi-byte characters.
+        let fullRange = NSRange(location: 0, length: utf16.count)
+        if let matches = String._mentionRegex?.matches(in: self, options: [], range: fullRange) {
+            let nsString = self as NSString
             for match in matches {
-                let range = NSRange(location: match.range.location, length: match.range.length)
-                let tag = NSString(string: self).substring(with: range)
-                hashtags.append((tag, range))
+                let tag = nsString.substring(with: match.range)
+                mentions.append((tag, match.range))
             }
         }
-        return hashtags
+        return mentions
     }
+
+    // MARK: - Cached regex instances (compiled once per process lifetime)
+
+    private static let _hashtagRegex = try? NSRegularExpression(
+        pattern: "(#[a-zA-Z0-9_\\p{Arabic}\\p{N}]*)", options: []
+    )
+    private static let _mentionRegex = try? NSRegularExpression(
+        pattern: "@[\\p{L}0-9_.]*", options: []
+    )
 }
 
 // ******************************* MARK: - Constants

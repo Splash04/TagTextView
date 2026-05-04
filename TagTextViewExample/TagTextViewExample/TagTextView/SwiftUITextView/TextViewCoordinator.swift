@@ -314,13 +314,12 @@ public extension TagTextView.Representable {
 // ******************************* MARK: - Update TextView by Representable
 
 extension TagTextView.Representable.Coordinator {
-
+#if DEBUG
     private func debugLog(_ message: String) {
-        #if DEBUG
         print("[TagTextViewDebug][Coordinator] \(message)")
-        #endif
     }
-
+#endif
+    
     func update(representable: TagTextView.Representable) {
 
         // Sync text from the binding into UITagTextView when it changes externally.
@@ -393,9 +392,11 @@ extension TagTextView.Representable.Coordinator {
 
         let shouldRefreshForProgrammaticChange = !textView.arrTags.isEmpty && textView.markedTextRange == nil
 
+#if DEBUG
         debugLog(
             "update: firstResponder=\(textView.isFirstResponder), marked=\(textView.markedTextRange != nil), tags=\(textView.arrTags.count), shouldRecalculate=\(shouldRefreshForProgrammaticChange || !textView.isFirstResponder)"
         )
+#endif
 
         if shouldRefreshForProgrammaticChange || !textView.isFirstResponder {
             textView.recalculateAttributes()
