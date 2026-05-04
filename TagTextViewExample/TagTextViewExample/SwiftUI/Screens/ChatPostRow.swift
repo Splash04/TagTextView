@@ -99,7 +99,7 @@ extension ChatPostRow {
                             .foregroundStyle(Color(.gray))
                             .font(.system(size: 12))
                             .multilineTextAlignment(.trailing)
-                            .frame(width: .infinity)
+                            .frame(maxWidth: .infinity)
                     }
                 }
             }

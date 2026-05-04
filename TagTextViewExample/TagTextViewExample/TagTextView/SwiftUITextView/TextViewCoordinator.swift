@@ -322,6 +322,17 @@ extension TagTextView.Representable.Coordinator {
     }
 
     func update(representable: TagTextView.Representable) {
+
+        // Sync text from the binding into UITagTextView when it changes externally.
+        // Compare plain strings only — tag highlight attributes live inside textStorage
+        if representable.text.string.isEmpty,
+           textView.attributedText.string != representable.text.string {
+           // Use clearText() (sets .text = "") so UIKit's text-input system is
+           // notified correctly even while the view is first responder.
+           // Setting .attributedText directly can fail to flush the display.
+           textView.clearText()
+        }
+
         textView.font = representable.font
         textView.adjustsFontForContentSizeCategory = true
         textView.textColor = representable.foregroundColor
@@ -379,6 +390,7 @@ extension TagTextView.Representable.Coordinator {
 
         recalculateHeight()
         textView.setNeedsDisplay()
+
         let shouldRefreshForProgrammaticChange = !textView.arrTags.isEmpty && textView.markedTextRange == nil
 
         debugLog(

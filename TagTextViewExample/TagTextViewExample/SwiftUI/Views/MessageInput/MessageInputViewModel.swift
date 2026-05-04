@@ -136,6 +136,7 @@ final class MessageInputViewModel: ObservableObject {
     }
     
     func clearInput() {
+        print("clearInput")
         inputText = .empty
         selectedTagsList = []
         searchCharacterList = []
