@@ -16,16 +16,18 @@ struct MessageInputView: View {
                 tags: $viewModel.selectedTagsList,
                 isFirstResponder: $viewModel.isFirstResponder,
                 onDidBeginEditing: {
-                    viewModel.inputState = .selected
+                    DispatchQueue.main.async { viewModel.inputState = .selected }
                 },
                 onDidEndEditing: {
-                    viewModel.inputState = .base
+                    DispatchQueue.main.async { viewModel.inputState = .base }
                 },
                 didChangedTagSearchString: { searchString, isHashTag in
-                    if !isHashTag {
-                        viewModel.searchTags(by: searchString)
-                    } else {
-                        viewModel.searchTags(by: nil)
+                    DispatchQueue.main.async {
+                        if !isHashTag {
+                            viewModel.searchTags(by: searchString)
+                        } else {
+                            viewModel.searchTags(by: nil)
+                        }
                     }
                 }
             )

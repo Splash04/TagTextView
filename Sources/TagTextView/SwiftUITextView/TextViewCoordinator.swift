@@ -314,18 +314,24 @@ public extension TagTextView.Representable {
 // ******************************* MARK: - Update TextView by Representable
 
 extension TagTextView.Representable.Coordinator {
-
+#if DEBUG
+    private func debugLog(_ message: String) {
+        print("[TagTextViewDebug][Coordinator] \(message)")
+    }
+#endif
+    
     func update(representable: TagTextView.Representable) {
-        if representable.allowsRichText {
-            if textView.attributedText != representable.text {
-                textView.attributedText = representable.text
-            }
-        } else {
-            if textView.attributedText.string != representable.text.string {
-                textView.attributedText = representable.text
-            }
+
+        // Sync text from the binding into UITagTextView when it changes externally.
+        // Compare plain strings only — tag highlight attributes live inside textStorage
+        if representable.text.string.isEmpty,
+           textView.attributedText.string != representable.text.string {
+           // Use clearText() (sets .text = "") so UIKit's text-input system is
+           // notified correctly even while the view is first responder.
+           // Setting .attributedText directly can fail to flush the display.
+           textView.clearText()
         }
-        
+
         textView.font = representable.font
         textView.adjustsFontForContentSizeCategory = true
         textView.textColor = representable.foregroundColor
@@ -383,7 +389,18 @@ extension TagTextView.Representable.Coordinator {
 
         recalculateHeight()
         textView.setNeedsDisplay()
-        textView.recalculateAttributes()
+
+        let shouldRefreshForProgrammaticChange = !textView.arrTags.isEmpty && textView.markedTextRange == nil
+
+#if DEBUG
+        debugLog(
+            "update: firstResponder=\(textView.isFirstResponder), marked=\(textView.markedTextRange != nil), tags=\(textView.arrTags.count), shouldRecalculate=\(shouldRefreshForProgrammaticChange || !textView.isFirstResponder)"
+        )
+#endif
+
+        if shouldRefreshForProgrammaticChange || !textView.isFirstResponder {
+            textView.recalculateAttributes()
+        }
         
         if let isFirstResponder = representable.isFirstResponder,
            isFirstResponder != textView.isFirstResponder {

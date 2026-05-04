@@ -38,12 +38,22 @@ open class UITagTextView: UITextView {
         }
     }
 
+    // Cached regex — rebuilt only when symbols actually change.
+    private var _cachedTagRegex: NSRegularExpression?
+    private var _cachedTagRegexPattern: String = ""
     private var tagRegex: NSRegularExpression {
-        (try? NSRegularExpression(pattern: "(\(mentionSymbol)|\(hashTagSymbol))([^\\s\\K]+)"))!
+        let pattern = "(\(mentionSymbol)|\(hashTagSymbol))([^\\s\\K]+)"
+        if _cachedTagRegex == nil || _cachedTagRegexPattern != pattern {
+            _cachedTagRegex = try? NSRegularExpression(pattern: pattern)
+            _cachedTagRegexPattern = pattern
+        }
+        return _cachedTagRegex!
     }
 
     private var isHashTag = false
     private var tapGesture = UITapGestureRecognizer()
+    private var wasMarkedTextActive = false
+    private var needsPostCompositionRefresh = false
     
     // ******************************* MARK: - Initialization and Setup
     
@@ -106,13 +116,13 @@ public extension UITagTextView {
             var location = arrTags[i].range.location
             let length = arrTags[i].range.length
             if location > newTagRange.location {
-                location += replace.count - origin.count
+                location += replace.utf16.count - origin.utf16.count
                 arrTags[i].range = NSRange(location: location, length: length)
             }
         }
         
         text = newText
-        updateAttributeText(selectedLocation: range.location + replace.count)
+        updateAttributeText(selectedLocation: range.location + replace.utf16.count)
         dpTagDelegate?.dpTagTextView(self, didInsertTag: dpTag)
         dpTagDelegate?.dpTagTextView(self, didChangedTags: arrTags)
         isHashTag = false
@@ -163,6 +173,10 @@ public extension UITagTextView {
     }
     
     func recalculateAttributes() {
+        // Skip while keyboard is composing text (predictive/IME) to avoid caret jumps.
+        guard markedTextRange == nil else {
+            return
+        }
         updateAttributeText(selectedLocation: selectedRange.location)
     }
 }
@@ -293,53 +307,51 @@ private extension UITagTextView {
             currentTaggingText = data.1
         }
     }
-    
+
     func updateAttributeText(selectedLocation: Int) {
         guard let text else { return }
         if text.isEmpty { arrTags.removeAll() }
-        let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttributes(textViewAttributes, range: NSRange(location: 0, length: text.utf16.count))
+
+        let fullRange = NSRange(location: 0, length: textStorage.length)
+        guard fullRange.length == text.utf16.count else {
+            // textStorage and text are out of sync — skip to avoid a crash.
+            return
+        }
+
+        // Apply attributes in-place via textStorage so the caret/selection is never touched.
+        textStorage.beginEditing()
+        textStorage.setAttributes(textViewAttributes, range: fullRange)
         for dpTag in arrTags {
-            guard let customTextAttributes = dpTag.customTextAttributes else {
-                if attributedString.length >= (dpTag.range.location + dpTag.range.length) {
-                    attributedString.addAttributes(dpTag.isHashTag ? hashTagTextAttributes : mentionTagTextAttributes, range: dpTag.range)
-                }
-                continue
+            let tagRange = dpTag.range
+            guard textStorage.length >= (tagRange.location + tagRange.length) else { continue }
+            if let custom = dpTag.customTextAttributes {
+                textStorage.addAttributes(custom, range: tagRange)
+            } else {
+                textStorage.addAttributes(dpTag.isHashTag ? hashTagTextAttributes : mentionTagTextAttributes, range: tagRange)
             }
-            attributedString.addAttributes(customTextAttributes, range: dpTag.range)
         }
-        // find hashtags
-        
         let hashtags = text.findHashtags()
-        for hashtag in hashtags {
-            if hashtag.0 != hashTagSymbol {
-                attributedString.addAttributes(hashTagTextAttributes, range: hashtag.1)
-            }
+        for hashtag in hashtags where hashtag.0 != hashTagSymbol {
+            textStorage.addAttributes(hashTagTextAttributes, range: hashtag.1)
         }
-         
-        attributedText = attributedString
-    
-        selectedRange = NSRange(location: selectedLocation, length: 0)
+        textStorage.endEditing()
+
+        // Negative location means "keep current caret/selection" for passive refresh calls.
+        guard selectedLocation >= 0 else { return }
+        let safeLocation = min(selectedLocation, textStorage.length)
+        selectedRange = NSRange(location: safeLocation, length: 0)
     }
-    
-    func fixedWhenMarketTextUnmatch() {
+
+    func fixedWhenMarkedTextUnmatch() {
         guard let text else { return }
         var result: [TagModel] = []
         let mentions = text.findMentions()
-        var sortedMentions = mentions.sorted {
-            $0.1.location < $1.1.location
-        }
+        var sortedMentions = mentions.sorted { $0.1.location < $1.1.location }
         while !sortedMentions.isEmpty {
             let mention = sortedMentions[0]
-            if let firstIndex = arrTags.firstIndex(where: { [mention] in
-                mention.0 == mentionSymbol.appending($0.name)
-            }) {
+            if let firstIndex = arrTags.firstIndex(where: { mention.0 == mentionSymbol.appending($0.name) }) {
                 var existingTag = arrTags[firstIndex]
-                let updatedRange = NSRange(
-                    location: mention.1.location,
-                    length: existingTag.range.length
-                )
-                existingTag.range = updatedRange
+                existingTag.range = NSRange(location: mention.1.location, length: existingTag.range.length)
                 result.append(existingTag)
                 arrTags.remove(at: firstIndex)
             }
@@ -388,12 +400,37 @@ extension UITagTextView: UITextViewDelegate {
     
     public func textViewDidChange(_ textView: UITextView) {
         tagging(textView: textView)
+        let isMarked = markedTextRange != nil
+
+        // Don't rewrite attributed text while marked text exists; iOS manages insertion/caret here.
+        guard !isMarked else {
+            wasMarkedTextActive = true
+            needsPostCompositionRefresh = true
+            dpTagDelegate?.textViewDidChange(self)
+            return
+        }
+
+        if wasMarkedTextActive || needsPostCompositionRefresh {
+            // IME/predictive composition may desync stored tag ranges; repair once after composition ends.
+            fixedWhenMarkedTextUnmatch()
+            wasMarkedTextActive = false
+            needsPostCompositionRefresh = false
+        }
+
         updateAttributeText(selectedLocation: textView.selectedRange.location)
         dpTagDelegate?.textViewDidChange(self)
     }
     
     public func textViewDidChangeSelection(_ textView: UITextView) {
         tagging(textView: textView)
+
+        if markedTextRange == nil, needsPostCompositionRefresh {
+            fixedWhenMarkedTextUnmatch()
+            needsPostCompositionRefresh = false
+            wasMarkedTextActive = false
+            updateAttributeText(selectedLocation: textView.selectedRange.location)
+        }
+
         dpTagDelegate?.textViewDidChangeSelection(self)
     }
     
@@ -410,14 +447,19 @@ extension UITagTextView: UITextViewDelegate {
             // check tag in list. if in list, we will replace mention or hashtag and remove from list
             if let currentTag = arrTags.first(where: { $0.range.location <= range.location && $0.range.location + $0.range.length > range.location
             }) {
-                let currentText = textView.text ?? ""
                 arrTags.removeAll {
                     $0.range.location <= range.location && $0.range.location + $0.range.length > range.location
                 }
-                let result = (currentText as NSString).replacingCharacters(in: currentTag.range, with: " ")
-                let attributedString = NSMutableAttributedString(string: result)
-                attributedString.addAttributes(textViewAttributes, range: NSRange(location: 0, length: result.utf16.count))
-                textView.attributedText = attributedString
+                // Replace the tag with a single space using textStorage to avoid resetting the caret.
+                let result = (textView.text as NSString).replacingCharacters(in: currentTag.range, with: " ")
+                let spaceRange = NSRange(location: 0, length: textStorage.length)
+                if spaceRange.length == (textView.text as NSString).length {
+                    textStorage.beginEditing()
+                    textStorage.replaceCharacters(in: currentTag.range, with: NSAttributedString(string: " ", attributes: textViewAttributes))
+                    textStorage.endEditing()
+                } else {
+                    textView.text = result
+                }
                 self.currentTaggingText = nil
                 currentTaggingRange = nil
                 selectedRange = NSRange(location: currentTag.range.location + 1, length: 0)
@@ -440,6 +482,12 @@ extension UITagTextView: UITextViewDelegate {
             }
         }
         
+        if markedTextRange != nil {
+            // Defer range mutation while IME is composing to avoid tag-range drift.
+            needsPostCompositionRefresh = true
+            return dpTagDelegate?.textView(self, shouldChangeTextIn: range, replacementText: text) ?? true
+        }
+
         updateArrTags(range: range, textCount: text.utf16.count)
         return dpTagDelegate?.textView(self, shouldChangeTextIn: range, replacementText: text) ?? true
     }

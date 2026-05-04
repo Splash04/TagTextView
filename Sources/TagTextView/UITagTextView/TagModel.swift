@@ -2,7 +2,7 @@ import Foundation
 
 // ******************************* MARK: - TagModel
 
-public struct TagModel: Identifiable {
+public struct TagModel: Identifiable, Equatable {
     public var id: String
     public var name: String
     public var range: NSRange
@@ -17,5 +17,14 @@ public struct TagModel: Identifiable {
         self.data = data
         self.isHashTag = isHashTag
         self.customTextAttributes = customTextAttributes
+    }
+
+    // `data` and `customTextAttributes` contain `Any` values and cannot be auto-compared;
+    // identity + structural fields are sufficient for equality checks used in diffing.
+    public static func == (lhs: TagModel, rhs: TagModel) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.name == rhs.name &&
+        lhs.range == rhs.range &&
+        lhs.isHashTag == rhs.isHashTag
     }
 }
