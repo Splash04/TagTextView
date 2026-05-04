@@ -183,7 +183,6 @@
 			children = (
 				F03FB89F2CBAD8E7000BB317 /* Navigation */,
 				F03FB8952CBABE57000BB317 /* DataManager */,
-				F03FB88C2CBAAB7C000BB317 /* Extentions */,
 				F03FB88B2CBAAB70000BB317 /* Style */,
 				F03FB8902CBAB125000BB317 /* ImageDataType.swift */,
 				F0313A252CBBB91A00E53EF5 /* ChatUtils.swift */,
@@ -232,13 +231,6 @@
 				F03FB8722CBAA892000BB317 /* TextFieldStyle.swift */,
 			);
 			path = Style;
-			sourceTree = "<group>";
-		};
-		F03FB88C2CBAAB7C000BB317 /* Extentions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Extentions;
 			sourceTree = "<group>";
 		};
 		F03FB88D2CBAACBB000BB317 /* Extentions */ = {
@@ -394,9 +386,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TagTextViewExample/Pods-TagTextViewExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TagTextViewExample/Pods-TagTextViewExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

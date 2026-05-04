@@ -44,6 +44,8 @@ open class UITagTextView: UITextView {
 
     private var isHashTag = false
     private var tapGesture = UITapGestureRecognizer()
+    private var wasMarkedTextActive = false
+    private var needsPostCompositionRefresh = false
     
     // ******************************* MARK: - Initialization and Setup
     
@@ -163,6 +165,12 @@ public extension UITagTextView {
     }
     
     func recalculateAttributes() {
+        // Skip while keyboard is composing text (predictive/IME) to avoid caret jumps.
+        guard markedTextRange == nil else {
+            debugLog("recalculateAttributes skipped: marked text is active")
+            return
+        }
+        debugLog("recalculateAttributes apply: caret=\(selectedRange.location), tags=\(arrTags.count)")
         updateAttributeText(selectedLocation: selectedRange.location)
     }
 }
@@ -170,6 +178,12 @@ public extension UITagTextView {
 // ******************************* MARK: - Private methods
 
 private extension UITagTextView {
+
+    func debugLog(_ message: String) {
+        #if DEBUG
+        print("[TagTextViewDebug][UITagTextView] \(message)")
+        #endif
+    }
     
     func setup() {
         delegate = self
@@ -296,6 +310,7 @@ private extension UITagTextView {
     
     func updateAttributeText(selectedLocation: Int) {
         guard let text else { return }
+        debugLog("updateAttributeText start: selectedLocation=\(selectedLocation), textLength=\(text.utf16.count), tags=\(arrTags.count)")
         if text.isEmpty { arrTags.removeAll() }
         let attributedString = NSMutableAttributedString(string: text)
         attributedString.addAttributes(textViewAttributes, range: NSRange(location: 0, length: text.utf16.count))
@@ -318,8 +333,15 @@ private extension UITagTextView {
         }
          
         attributedText = attributedString
-    
-        selectedRange = NSRange(location: selectedLocation, length: 0)
+
+          // Negative location means "keep current caret/selection" for passive refresh calls.
+        guard selectedLocation >= 0 else {
+            debugLog("updateAttributeText keep selection: current=\(selectedRange.location)")
+            return
+        }
+          let safeLocation = min(selectedLocation, attributedString.length)
+        selectedRange = NSRange(location: safeLocation, length: 0)
+        debugLog("updateAttributeText end: caret=\(safeLocation)")
     }
     
     func fixedWhenMarketTextUnmatch() {
@@ -388,12 +410,41 @@ extension UITagTextView: UITextViewDelegate {
     
     public func textViewDidChange(_ textView: UITextView) {
         tagging(textView: textView)
+        let isMarked = markedTextRange != nil
+        debugLog("textViewDidChange: caret=\(textView.selectedRange.location), marked=\(isMarked), tags=\(arrTags.count), textLength=\(textView.text.utf16.count)")
+
+        // Don't rewrite attributed text while marked text exists; iOS manages insertion/caret here.
+        guard !isMarked else {
+            wasMarkedTextActive = true
+            needsPostCompositionRefresh = true
+            debugLog("textViewDidChange skipped attribute update due to marked text")
+            dpTagDelegate?.textViewDidChange(self)
+            return
+        }
+
+        if wasMarkedTextActive || needsPostCompositionRefresh {
+            // IME/predictive composition may desync stored tag ranges; repair once after composition ends.
+            fixedWhenMarketTextUnmatch()
+            wasMarkedTextActive = false
+            needsPostCompositionRefresh = false
+            debugLog("textViewDidChange post-composition refresh prepared")
+        }
+
         updateAttributeText(selectedLocation: textView.selectedRange.location)
         dpTagDelegate?.textViewDidChange(self)
     }
     
     public func textViewDidChangeSelection(_ textView: UITextView) {
         tagging(textView: textView)
+
+        if markedTextRange == nil, needsPostCompositionRefresh {
+            fixedWhenMarketTextUnmatch()
+            needsPostCompositionRefresh = false
+            wasMarkedTextActive = false
+            updateAttributeText(selectedLocation: textView.selectedRange.location)
+            debugLog("textViewDidChangeSelection applied deferred post-composition refresh")
+        }
+
         dpTagDelegate?.textViewDidChangeSelection(self)
     }
     
@@ -440,6 +491,12 @@ extension UITagTextView: UITextViewDelegate {
             }
         }
         
+        if markedTextRange != nil {
+            // Defer range mutation while IME is composing to avoid tag-range drift.
+            needsPostCompositionRefresh = true
+            return dpTagDelegate?.textView(self, shouldChangeTextIn: range, replacementText: text) ?? true
+        }
+
         updateArrTags(range: range, textCount: text.utf16.count)
         return dpTagDelegate?.textView(self, shouldChangeTextIn: range, replacementText: text) ?? true
     }

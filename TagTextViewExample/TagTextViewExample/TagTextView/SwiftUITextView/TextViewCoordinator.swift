@@ -315,17 +315,13 @@ public extension TagTextView.Representable {
 
 extension TagTextView.Representable.Coordinator {
 
+    private func debugLog(_ message: String) {
+        #if DEBUG
+        print("[TagTextViewDebug][Coordinator] \(message)")
+        #endif
+    }
+
     func update(representable: TagTextView.Representable) {
-        if representable.allowsRichText {
-            if textView.attributedText != representable.text {
-                textView.attributedText = representable.text
-            }
-        } else {
-            if textView.attributedText.string != representable.text.string {
-                textView.attributedText = representable.text
-            }
-        }
-        
         textView.font = representable.font
         textView.adjustsFontForContentSizeCategory = true
         textView.textColor = representable.foregroundColor
@@ -383,7 +379,15 @@ extension TagTextView.Representable.Coordinator {
 
         recalculateHeight()
         textView.setNeedsDisplay()
-        textView.recalculateAttributes()
+        let shouldRefreshForProgrammaticChange = !textView.arrTags.isEmpty && textView.markedTextRange == nil
+
+        debugLog(
+            "update: firstResponder=\(textView.isFirstResponder), marked=\(textView.markedTextRange != nil), tags=\(textView.arrTags.count), shouldRecalculate=\(shouldRefreshForProgrammaticChange || !textView.isFirstResponder)"
+        )
+
+        if shouldRefreshForProgrammaticChange || !textView.isFirstResponder {
+            textView.recalculateAttributes()
+        }
         
         if let isFirstResponder = representable.isFirstResponder,
            isFirstResponder != textView.isFirstResponder {
