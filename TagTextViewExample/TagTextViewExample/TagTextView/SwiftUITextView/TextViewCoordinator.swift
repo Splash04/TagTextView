@@ -246,6 +246,10 @@ public extension TagTextView.Representable {
                                                    object: nil)
         }
 
+        deinit {
+            NotificationCenter.default.removeObserver(self)
+        }
+
         public func textViewDidBeginEditing(_ textView: UITagTextView) {
             originalText = text.wrappedValue
             onDidBeginEditing?()

@@ -22,7 +22,7 @@ open class UITagTextView: UITextView {
     ]
     
     public private(set) var arrTags: [TagModel] = []
-    open var dpTagDelegate: TagTextViewDelegate?
+    open weak var dpTagDelegate: TagTextViewDelegate?
     open var allowsHashTagUsingSpace: Bool = true
     open var textLengthLimit: Int?
     open var mentionMinLength: Int = Constants.Defaults.minMentionLength

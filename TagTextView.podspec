@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 s.name             = "TagTextView"
-s.version          = "1.0.6"
+s.version          = "1.0.7"
 s.summary          = "UITextView with Mentions and Tags support for SwiftUI and UIKit"
 s.homepage         = "https://github.com/Splash04/TagTextView"
 s.license          = 'MIT'
