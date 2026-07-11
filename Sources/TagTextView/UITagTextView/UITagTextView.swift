@@ -42,7 +42,9 @@ open class UITagTextView: UITextView {
     private var _cachedTagRegex: NSRegularExpression?
     private var _cachedTagRegexPattern: String = ""
     private var tagRegex: NSRegularExpression {
-        let pattern = "(\(mentionSymbol)|\(hashTagSymbol))([^\\s\\K]+)"
+        // Note: ICU reads `\K` inside a character class as a literal "K", which silently
+        // excluded that letter from tag text (e.g. "@Kevin" never matched) — plain \s only.
+        let pattern = "(\(mentionSymbol)|\(hashTagSymbol))([^\\s]+)"
         if _cachedTagRegex == nil || _cachedTagRegexPattern != pattern {
             _cachedTagRegex = try? NSRegularExpression(pattern: pattern)
             _cachedTagRegexPattern = pattern
@@ -68,7 +70,10 @@ open class UITagTextView: UITextView {
     
     override open func awakeFromNib() {
         super.awakeFromNib()
-        setup()
+        // awakeFromNib is nonisolated in the SDK but UIKit always calls it on the main thread.
+        MainActor.assumeIsolated {
+            setup()
+        }
     }
 }
 
@@ -215,7 +220,8 @@ private extension UITagTextView {
         var matchedRange: NSRange?
         var matchedString: String?
         let tag = String(taggingCharacters.reversed())
-        let textRange = NSRange(location: selectedLocation - tag.count, length: tag.count)
+        // NSRange offsets are UTF-16; Character count under-counts emoji/multi-scalar tags.
+        let textRange = NSRange(location: selectedLocation - tag.utf16.count, length: tag.utf16.count)
         
         guard tag == mentionSymbol || tag == hashTagSymbol else {
             let matched = tagRegex.matches(in: taggingText, options: .reportCompletion, range: textRange)
@@ -244,7 +250,7 @@ private extension UITagTextView {
         var tagable: Bool = false
         var characters: [Character] = []
         
-        for char in Array(taggingText).reversed() {
+        for char in taggingText.reversed() {
             if char == mentionSymbol.first {
                 characters.append(char)
                 isHashTag = false

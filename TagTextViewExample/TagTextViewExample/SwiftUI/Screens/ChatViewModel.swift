@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 
+@MainActor
 final class ChatViewModel: ObservableObject {
     @Published
     var postList: [MessageModel] = MessageModel.previewList

@@ -25,7 +25,8 @@ public extension TagTextView {
         let textLengthLimit: Int?
         let viewId: Int
         let hideKeyboardOnCommit: Bool
-        
+        let heightChangeAnimation: Animation?
+
         let mentionSymbol: String
         let mentionForegroundColor: UIColor
         let mentionFont: UIFont

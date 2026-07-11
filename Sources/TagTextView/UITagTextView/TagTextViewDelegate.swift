@@ -2,7 +2,7 @@ import UIKit
 
 // ******************************* MARK: - DPTagTextViewDelegate
 
-public protocol TagTextViewDelegate: AnyObject {
+@MainActor public protocol TagTextViewDelegate: AnyObject {
     func dpTagTextView(_ textView: UITagTextView, didChangedTagSearchString strSearch: String, isHashTag: Bool)
     func dpTagTextView(_ textView: UITagTextView, didInsertTag tag: TagModel)
     func dpTagTextView(_ textView: UITagTextView, didRemoveTag tag: TagModel)

@@ -3,6 +3,7 @@ import SwiftUI
 import Combine
 import TagTextView
 
+@MainActor
 final class MessageInputViewModel: ObservableObject {
     typealias MessageInputClosure = (MessageModel) -> Void
     

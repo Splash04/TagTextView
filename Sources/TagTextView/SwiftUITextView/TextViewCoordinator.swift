@@ -177,7 +177,7 @@ fileprivate extension TagTextView.Representable.Coordinator {
 // ******************************* MARK: - Coordinator + TagTextViewDelegate
 
 public extension TagTextView.Representable {
-    final class Coordinator: NSObject, TagTextViewDelegate {
+    @MainActor final class Coordinator: NSObject, TagTextViewDelegate {
 
         let textView: UIKitTagTextView
 
@@ -199,6 +199,7 @@ public extension TagTextView.Representable {
         var didSelectTag: ((TagModel) -> Void)?
         var didChangedTags: (([TagModel]) -> Void)?
         var hideKeyboardOnCommit: Bool
+        var heightChangeAnimation: Animation?
 
         init(text: Binding<NSAttributedString>,
              tags: Binding<[TagModel]>,
@@ -373,6 +374,7 @@ extension TagTextView.Representable.Coordinator {
             NSAttributedString.Key.font: representable.hashTagFont
         ]
         textView.hashTagSymbol = representable.hashTagSymbol
+        heightChangeAnimation = representable.heightChangeAnimation
 
         switch representable.multilineTextAlignment {
         case .leading:
@@ -428,7 +430,13 @@ extension TagTextView.Representable.Coordinator {
         guard calculatedHeight.wrappedValue != newSize.height else { return }
 
         DispatchQueue.main.async { // call in next render cycle.
-            self.calculatedHeight.wrappedValue = newSize.height
+            if let animation = self.heightChangeAnimation {
+                withAnimation(animation) {
+                    self.calculatedHeight.wrappedValue = newSize.height
+                }
+            } else {
+                self.calculatedHeight.wrappedValue = newSize.height
+            }
         }
     }
 }

@@ -2,6 +2,14 @@ import SwiftUI
 
 public extension TagTextView {
     
+    /// Animates the view's height changes (and placeholder fade) as text wraps, grows or clears
+    /// - Parameter animation: The animation to apply; `nil` (default) keeps instant height updates
+    func heightChangeAnimation(_ animation: Animation?) -> TagTextView {
+        var view = self
+        view.heightChangeAnimation = animation
+        return view
+    }
+
     /// Specifies whether or not keyboard should be automatically hidden after user press commit button
     /// - Parameter hideKeyboardOnCommit: If `true`, will call resignFirstResponder after user press commit button
     func setHideKeyboardOnCommit(_ hideKeyboardOnCommit: Bool) -> TagTextView {

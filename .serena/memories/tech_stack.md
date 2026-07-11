@@ -1,6 +1,6 @@
 ## Tech stack
 
-- Swift tools version 5.9 (`Package.swift`), Swift version 5.0 declared in podspec.
+- Swift 6 language mode (strict concurrency): tools version 6.0 (`Package.swift`), `swift_version '6.0'` in the podspec, and `SWIFT_VERSION = 6.0` in the example app project.
 - Deployment target iOS 15+ (both `Package.swift` and `TagTextView.podspec` pin `.iOS(.v15)` / `'15.0'`).
 - Library target (`TagTextView`) has zero external dependencies; only imports `SwiftUI`/`UIKit`/`Foundation`.
 - Ships `Sources/PrivacyInfo.xcprivacy` as a resource via both SPM (`resources: [.process(...)]`) and

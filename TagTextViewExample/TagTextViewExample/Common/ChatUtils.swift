@@ -70,7 +70,7 @@ extension ChatUtils.Constants {
         static let fontSize: CGFloat = 14
         static let font: UIFont = .systemFont(ofSize: fontSize)
         static let textColor: UIColor = .black
-        static let textAttributes: [NSAttributedString.Key: Any] = [
+        static let textAttributes: [NSAttributedString.Key: any Sendable] = [
             NSAttributedString.Key.foregroundColor: textColor,
             NSAttributedString.Key.font: font
         ]
@@ -81,7 +81,7 @@ extension ChatUtils.Constants {
         static let fontSize: CGFloat = 14
         static let font: UIFont = .systemFont(ofSize: fontSize)
         static let textColor: UIColor = .blue
-        static let textAttributes: [NSAttributedString.Key: Any] = [
+        static let textAttributes: [NSAttributedString.Key: any Sendable] = [
             NSAttributedString.Key.foregroundColor: textColor,
             NSAttributedString.Key.font: font
         ]
@@ -92,7 +92,7 @@ extension ChatUtils.Constants {
         static let fontSize: CGFloat = 14
         static let font: UIFont = .systemFont(ofSize: fontSize)
         static let textColor: UIColor = .green
-        static let textAttributes: [NSAttributedString.Key: Any] = [
+        static let textAttributes: [NSAttributedString.Key: any Sendable] = [
             NSAttributedString.Key.foregroundColor: textColor,
             NSAttributedString.Key.font: font
         ]

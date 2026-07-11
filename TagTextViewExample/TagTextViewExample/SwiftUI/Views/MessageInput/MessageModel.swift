@@ -26,7 +26,7 @@ extension MessageModel {
 // ******************************* MARK: - SwiftUI Preview Data
 
 extension MessageModel {
-    static var previewList: [MessageModel] = [
+    @MainActor static let previewList: [MessageModel] = [
         MessageModel(
             id: 1,
             text: "You don’t really think you’re going to be able to find all those #Horcruxes by yourself, do you? You need us, @Harry Potter.",

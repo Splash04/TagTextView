@@ -41,7 +41,8 @@ public struct TagTextView: View {
     var textLengthLimit: Int?
     var viewId: Int = 0
     var hideKeyboardOnCommit: Bool = false
-    
+    var heightChangeAnimation: Animation?
+
     var mentionSymbol: String = .mention
     var mentionForegroundColor: UIColor = UITagTextView.Constants.Defaults.mentionColor
     var mentionFont: UIFont = UITagTextView.Constants.Defaults.mentionFont
@@ -166,6 +167,7 @@ public struct TagTextView: View {
             textLengthLimit: textLengthLimit,
             viewId: viewId,
             hideKeyboardOnCommit: hideKeyboardOnCommit,
+            heightChangeAnimation: heightChangeAnimation,
             mentionSymbol: mentionSymbol,
             mentionForegroundColor: mentionForegroundColor,
             mentionFont: mentionFont,
@@ -195,7 +197,8 @@ public struct TagTextView: View {
                 .font(Font(font))
                 .padding(.horizontal, scrollingBehavior.horizontalPadding)
                 .padding(.vertical, scrollingBehavior.verticalPadding)
-                .opacity(isEmpty ? 1 : 0),
+                .opacity(isEmpty ? 1 : 0)
+                .animation(heightChangeAnimation, value: isEmpty),
             alignment: .topLeading
         )
     }

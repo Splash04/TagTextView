@@ -44,6 +44,7 @@ struct MessageInputView: View {
             .hashTagColor(Constants.hashTagColor)
             .hashTagFont(Constants.inputTextFont)
             .scrollingBehavior(.maxHeight(100))
+            .heightChangeAnimation(.easeOut(duration: 0.15))
             .padding(.vertical, 4)
             .padding(.horizontal, 12)
             .background {

@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 
 /// Manager that is responsible for providing data
+@MainActor
 final class DataManager {
     
     // ******************************* MARK: - Singleton
