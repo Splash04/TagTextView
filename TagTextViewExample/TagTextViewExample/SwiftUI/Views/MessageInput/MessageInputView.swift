@@ -1,4 +1,5 @@
 import SwiftUI
+import TagTextView
 
 struct MessageInputView: View {
     

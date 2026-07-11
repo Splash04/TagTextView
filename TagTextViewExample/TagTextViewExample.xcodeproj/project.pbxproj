@@ -11,7 +11,6 @@
 		F0313A222CBBAEB500E53EF5 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0313A212CBBAEB500E53EF5 /* View.swift */; };
 		F0313A242CBBAF0B00E53EF5 /* ChatPostRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0313A232CBBAF0B00E53EF5 /* ChatPostRow.swift */; };
 		F0313A262CBBB91A00E53EF5 /* ChatUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0313A252CBBB91A00E53EF5 /* ChatUtils.swift */; };
-		F0313A2C2CBBDE1200E53EF5 /* UIKitTagTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0313A2B2CBBDE1200E53EF5 /* UIKitTagTextView.swift */; };
 		F03FB84E2CBAA15A000BB317 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB84D2CBAA15A000BB317 /* AppDelegate.swift */; };
 		F03FB8502CBAA15A000BB317 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB84F2CBAA15A000BB317 /* SceneDelegate.swift */; };
 		F03FB8522CBAA15A000BB317 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB8512CBAA15A000BB317 /* MainViewController.swift */; };
@@ -25,15 +24,6 @@
 		F03FB86F2CBAA597000BB317 /* InputViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB86E2CBAA597000BB317 /* InputViewState.swift */; };
 		F03FB8712CBAA6DB000BB317 /* LabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB8702CBAA6DB000BB317 /* LabelStyle.swift */; };
 		F03FB8732CBAA892000BB317 /* TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB8722CBAA892000BB317 /* TextFieldStyle.swift */; };
-		F03FB8822CBAA98D000BB317 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB8762CBAA98D000BB317 /* Modifiers.swift */; };
-		F03FB8832CBAA98D000BB317 /* Representable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB8772CBAA98D000BB317 /* Representable.swift */; };
-		F03FB8842CBAA98D000BB317 /* ScrollingBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB8782CBAA98D000BB317 /* ScrollingBehavior.swift */; };
-		F03FB8852CBAA98D000BB317 /* TagTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB8792CBAA98D000BB317 /* TagTextView.swift */; };
-		F03FB8862CBAA98D000BB317 /* TextViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB87A2CBAA98D000BB317 /* TextViewCoordinator.swift */; };
-		F03FB8882CBAA98D000BB317 /* TagModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB87D2CBAA98D000BB317 /* TagModel.swift */; };
-		F03FB8892CBAA98D000BB317 /* TagTextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB87E2CBAA98D000BB317 /* TagTextViewDelegate.swift */; };
-		F03FB88A2CBAA98D000BB317 /* UITagTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB87F2CBAA98D000BB317 /* UITagTextView.swift */; };
-		F03FB88F2CBAACDD000BB317 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB88E2CBAACDD000BB317 /* String.swift */; };
 		F03FB8912CBAB125000BB317 /* ImageDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB8902CBAB125000BB317 /* ImageDataType.swift */; };
 		F03FB8942CBAB695000BB317 /* LazyImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB8932CBAB695000BB317 /* LazyImageView.swift */; };
 		F03FB8972CBABE76000BB317 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03FB8962CBABE76000BB317 /* DataManager.swift */; };
@@ -51,7 +41,6 @@
 		F0313A212CBBAEB500E53EF5 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		F0313A232CBBAF0B00E53EF5 /* ChatPostRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPostRow.swift; sourceTree = "<group>"; };
 		F0313A252CBBB91A00E53EF5 /* ChatUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUtils.swift; sourceTree = "<group>"; };
-		F0313A2B2CBBDE1200E53EF5 /* UIKitTagTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTagTextView.swift; sourceTree = "<group>"; };
 		F03FB84A2CBAA15A000BB317 /* TagTextViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TagTextViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F03FB84D2CBAA15A000BB317 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F03FB84F2CBAA15A000BB317 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,15 +56,6 @@
 		F03FB86E2CBAA597000BB317 /* InputViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViewState.swift; sourceTree = "<group>"; };
 		F03FB8702CBAA6DB000BB317 /* LabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelStyle.swift; sourceTree = "<group>"; };
 		F03FB8722CBAA892000BB317 /* TextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStyle.swift; sourceTree = "<group>"; };
-		F03FB8762CBAA98D000BB317 /* Modifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
-		F03FB8772CBAA98D000BB317 /* Representable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Representable.swift; sourceTree = "<group>"; };
-		F03FB8782CBAA98D000BB317 /* ScrollingBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingBehavior.swift; sourceTree = "<group>"; };
-		F03FB8792CBAA98D000BB317 /* TagTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagTextView.swift; sourceTree = "<group>"; };
-		F03FB87A2CBAA98D000BB317 /* TextViewCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewCoordinator.swift; sourceTree = "<group>"; };
-		F03FB87D2CBAA98D000BB317 /* TagModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagModel.swift; sourceTree = "<group>"; };
-		F03FB87E2CBAA98D000BB317 /* TagTextViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagTextViewDelegate.swift; sourceTree = "<group>"; };
-		F03FB87F2CBAA98D000BB317 /* UITagTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITagTextView.swift; sourceTree = "<group>"; };
-		F03FB88E2CBAACDD000BB317 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		F03FB8902CBAB125000BB317 /* ImageDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataType.swift; sourceTree = "<group>"; };
 		F03FB8932CBAB695000BB317 /* LazyImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyImageView.swift; sourceTree = "<group>"; };
 		F03FB8962CBABE76000BB317 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
@@ -145,7 +125,6 @@
 			isa = PBXGroup;
 			children = (
 				F03FB86D2CBAA58A000BB317 /* Common */,
-				F03FB8812CBAA98D000BB317 /* TagTextView */,
 				F03FB8632CBAA37A000BB317 /* SwiftUI */,
 				F03FB84D2CBAA15A000BB317 /* AppDelegate.swift */,
 				F03FB84F2CBAA15A000BB317 /* SceneDelegate.swift */,
@@ -190,39 +169,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		F03FB87C2CBAA98D000BB317 /* SwiftUITextView */ = {
-			isa = PBXGroup;
-			children = (
-				F03FB8762CBAA98D000BB317 /* Modifiers.swift */,
-				F03FB8772CBAA98D000BB317 /* Representable.swift */,
-				F03FB8782CBAA98D000BB317 /* ScrollingBehavior.swift */,
-				F03FB8792CBAA98D000BB317 /* TagTextView.swift */,
-				F03FB87A2CBAA98D000BB317 /* TextViewCoordinator.swift */,
-				F0313A2B2CBBDE1200E53EF5 /* UIKitTagTextView.swift */,
-			);
-			path = SwiftUITextView;
-			sourceTree = "<group>";
-		};
-		F03FB8802CBAA98D000BB317 /* UITagTextView */ = {
-			isa = PBXGroup;
-			children = (
-				F03FB87D2CBAA98D000BB317 /* TagModel.swift */,
-				F03FB87E2CBAA98D000BB317 /* TagTextViewDelegate.swift */,
-				F03FB87F2CBAA98D000BB317 /* UITagTextView.swift */,
-			);
-			path = UITagTextView;
-			sourceTree = "<group>";
-		};
-		F03FB8812CBAA98D000BB317 /* TagTextView */ = {
-			isa = PBXGroup;
-			children = (
-				F03FB88D2CBAACBB000BB317 /* Extentions */,
-				F03FB87C2CBAA98D000BB317 /* SwiftUITextView */,
-				F03FB8802CBAA98D000BB317 /* UITagTextView */,
-			);
-			path = TagTextView;
-			sourceTree = "<group>";
-		};
 		F03FB88B2CBAAB70000BB317 /* Style */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,14 +177,6 @@
 				F03FB8722CBAA892000BB317 /* TextFieldStyle.swift */,
 			);
 			path = Style;
-			sourceTree = "<group>";
-		};
-		F03FB88D2CBAACBB000BB317 /* Extentions */ = {
-			isa = PBXGroup;
-			children = (
-				F03FB88E2CBAACDD000BB317 /* String.swift */,
-			);
-			path = Extentions;
 			sourceTree = "<group>";
 		};
 		F03FB8922CBAB680000BB317 /* LazyImage */ = {
@@ -386,13 +324,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TagTextViewExample/Pods-TagTextViewExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TagTextViewExample/Pods-TagTextViewExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -408,10 +342,7 @@
 			files = (
 				F03FB8A12CBAD8E7000BB317 /* NavigationStackHolder.swift in Sources */,
 				F03FB8522CBAA15A000BB317 /* MainViewController.swift in Sources */,
-				F03FB8822CBAA98D000BB317 /* Modifiers.swift in Sources */,
-				F03FB88F2CBAACDD000BB317 /* String.swift in Sources */,
 				F03FB8672CBAA402000BB317 /* MessageInputView.swift in Sources */,
-				F0313A2C2CBBDE1200E53EF5 /* UIKitTagTextView.swift in Sources */,
 				F03FB84E2CBAA15A000BB317 /* AppDelegate.swift in Sources */,
 				F03FB8972CBABE76000BB317 /* DataManager.swift in Sources */,
 				F03FB8A22CBAD8E7000BB317 /* ViewControllable.swift in Sources */,
@@ -419,24 +350,17 @@
 				F03FB8942CBAB695000BB317 /* LazyImageView.swift in Sources */,
 				F03FB86F2CBAA597000BB317 /* InputViewState.swift in Sources */,
 				F03FB8502CBAA15A000BB317 /* SceneDelegate.swift in Sources */,
-				F03FB8862CBAA98D000BB317 /* TextViewCoordinator.swift in Sources */,
-				F03FB8882CBAA98D000BB317 /* TagModel.swift in Sources */,
 				F03FB8652CBAA39F000BB317 /* ChatScreen.swift in Sources */,
-				F03FB8852CBAA98D000BB317 /* TagTextView.swift in Sources */,
 				F03FB86A2CBAA454000BB317 /* MessageInputViewModel.swift in Sources */,
 				F03FB8A02CBAD8E7000BB317 /* HostingController.swift in Sources */,
 				F03FB8992CBABE9D000BB317 /* FilmCharacter.swift in Sources */,
 				F03FB8712CBAA6DB000BB317 /* LabelStyle.swift in Sources */,
-				F03FB8832CBAA98D000BB317 /* Representable.swift in Sources */,
 				F0313A242CBBAF0B00E53EF5 /* ChatPostRow.swift in Sources */,
 				F03FB8A42CBAD93F000BB317 /* ChatViewModel.swift in Sources */,
 				F0313A222CBBAEB500E53EF5 /* View.swift in Sources */,
-				F03FB8842CBAA98D000BB317 /* ScrollingBehavior.swift in Sources */,
 				F03FB8912CBAB125000BB317 /* ImageDataType.swift in Sources */,
 				F03FB86C2CBAA4A7000BB317 /* MessageModel.swift in Sources */,
-				F03FB88A2CBAA98D000BB317 /* UITagTextView.swift in Sources */,
 				F0313A262CBBB91A00E53EF5 /* ChatUtils.swift in Sources */,
-				F03FB8892CBAA98D000BB317 /* TagTextViewDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

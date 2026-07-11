@@ -2,19 +2,26 @@ PODS:
   - Alamofire (5.11.2)
   - AlamofireImage (4.4.0):
     - Alamofire (~> 5.11)
+  - TagTextView (1.0.7)
 
 DEPENDENCIES:
   - AlamofireImage
+  - TagTextView (from `../`)
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - AlamofireImage
 
+EXTERNAL SOURCES:
+  TagTextView:
+    :path: "../"
+
 SPEC CHECKSUMS:
   Alamofire: 400275dd1c6d87d95a041861d2a59da4b520a203
   AlamofireImage: 19ec9c0991f52cc7f9ba6a9d4ec782e29bdf6210
+  TagTextView: 17e7364e0dcfc609eedd8a997c695bb4227869a6
 
-PODFILE CHECKSUM: a5bee12d8f2852191c99a1c3ee07bed76da43f98
+PODFILE CHECKSUM: 797b1b3e06ae06f75b17e1f7eae5e1ae885e74ed
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.17.0

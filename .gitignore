@@ -17,12 +17,8 @@ ehthumbs_vista.db
 *.diff
 *.log
 
-
-
 ## idea
 .idea/
-
-
 
 # Xcode
 #
@@ -60,16 +56,12 @@ R.generated.swift
 timeline.xctimeline
 playground.xcworkspace
 
-
-
 # Swift Package Manager
 #
 # Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
 # Packages/
 # Package.pins
 .build/
-
-
 
 # CocoaPods
 #
@@ -79,17 +71,12 @@ playground.xcworkspace
 #
 Pods/
 
-
-
 # Carthage
 #
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
 # Carthage/Checkouts
 
 Carthage/Build
-
-
-
 
 # fastlane
 #
@@ -111,3 +98,7 @@ fastlane/Readme.md
 # Ruby gems
 /bundler
 /vendor
+
+# AI Tools
+.cartographer/
+.continue/

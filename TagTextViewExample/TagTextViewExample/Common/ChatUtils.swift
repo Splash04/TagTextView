@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import TagTextView
 
 enum ChatUtils {
     static func createFormatedMessage(text: String?, mentions: [TagModel]?) -> AttributedString? {

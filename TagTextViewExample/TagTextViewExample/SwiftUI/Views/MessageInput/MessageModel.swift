@@ -1,4 +1,5 @@
 import Foundation
+import TagTextView
 
 struct MessageModel: Identifiable {
     let id: Int

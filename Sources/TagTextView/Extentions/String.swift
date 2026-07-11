@@ -2,7 +2,7 @@ import Foundation
 
 // ******************************* MARK: - StringProtocol
 
-internal extension StringProtocol {
+public extension StringProtocol {
     
     /// Returns `self` if it is not blank. Otherwise, returns `nil`
     /// - note: Blank means that string contains only whitespaces and newlines
@@ -83,7 +83,7 @@ public extension String {
 
 // ******************************* MARK: - Constants
 
-internal extension String {
+public extension String {
     static let empty = String()
     static let space = String(Character.space)
     static let lineBreak: String = String(Character.lineBreak)
@@ -91,7 +91,7 @@ internal extension String {
     static let hashTag: String = String(Character.hashTag)
 }
 
-internal extension Character {
+public extension Character {
     static let space: Character = " "
     static let lineBreak: Character = "\n"
     static let mention: Character = "@"
